@@ -20,8 +20,8 @@ entity RCTAlgoWrapper is
     algoReady : out std_logic := '0';
 
     -- AXI-Stream In/Out Ports
-    axiStreamIn  : in  AxiStreamMasterArray(N_INPUT_STREAMS-1 downto 0);
-    axiStreamOut : out AxiStreamMasterArray(N_OUTPUT_STREAMS-1 downto 0)
+    axiStreamIn  : in  AxiStreamMasterArray(0 TO N_INPUT_STREAMS-1);
+    axiStreamOut : out AxiStreamMasterArray(0 TO N_OUTPUT_STREAMS-1)
     );
 end RCTAlgoWrapper;
 
@@ -158,17 +158,17 @@ architecture Behavioral of RCTAlgoWrapper is
   type t_slv_384_arr is array(integer range <>) of std_logic_vector(383 downto 0);
 
 
-  signal link_in  : t_slv_384_arr(N_INPUT_STREAMS-1 downto 0);
-  signal link_out : t_slv_384_arr(N_OUTPUT_STREAMS-1 downto 0);
+  signal link_in  : t_slv_384_arr(0 TO N_INPUT_STREAMS-1);
+  signal link_out : t_slv_384_arr(0 TO N_OUTPUT_STREAMS-1);
 
-  signal link_in_reg  : t_slv_384_arr(N_INPUT_STREAMS-1 downto 0);
-  signal link_out_reg : t_slv_384_arr(N_OUTPUT_STREAMS-1 downto 0);
+  signal link_in_reg  : t_slv_384_arr(0 TO N_INPUT_STREAMS-1);
+  signal link_out_reg : t_slv_384_arr(0 TO N_OUTPUT_STREAMS-1);
 
-  signal link_out_ap_vld         : std_logic_vector(N_OUTPUT_STREAMS-1 downto 0);
-  signal link_out_ap_vld_latched : std_logic_vector(N_OUTPUT_STREAMS-1 downto 0);
+  signal link_out_ap_vld         : std_logic_vector(0 TO N_OUTPUT_STREAMS-1);
+  signal link_out_ap_vld_latched : std_logic_vector(0 TO N_OUTPUT_STREAMS-1);
 
-  signal in_cyc  : t_cyc_6_arr(N_INPUT_STREAMS-1 downto 0);
-  signal out_cyc : t_cyc_6_arr(N_OUTPUT_STREAMS-1 downto 0);
+  signal in_cyc  : t_cyc_6_arr(0 TO N_INPUT_STREAMS-1);
+  signal out_cyc : t_cyc_6_arr(0 TO N_OUTPUT_STREAMS-1);
 
 begin
 
@@ -176,7 +176,7 @@ begin
   --algoRstD1n  <= not algoRstD1;
   algoStartD1 <= algoStart when rising_edge(algoClk);
 
-  gen_cyc_in : for idx in N_INPUT_STREAMS-1 DOWNTO 0 generate
+  gen_cyc_in : for idx in 0 TO N_INPUT_STREAMS-1 generate
     process(algoClk) is
     begin
       if rising_edge(algoClk) then
@@ -224,7 +224,7 @@ begin
   end generate;
 
 
-  gen_cyc_out : for idx in N_OUTPUT_STREAMS-1 DOWNTO 0 generate
+  gen_cyc_out : for idx in 0 TO  N_OUTPUT_STREAMS-1 generate
     process(algoClk) is
     begin
       if rising_edge(algoClk) then
